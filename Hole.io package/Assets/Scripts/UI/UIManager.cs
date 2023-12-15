@@ -22,7 +22,6 @@ namespace Holeio.UI
         [Header("Game Completed")]
         public GameObject GameFinished;
         public TextMeshProUGUI LastScore;
-        public GameObject RewardButton;
 
         [Header("Levels")]
         public string[] GameLevels;
@@ -39,39 +38,29 @@ namespace Holeio.UI
         private float currentTime;
         [SerializeField]
         private float StartTime;
+
         [Header("Lagged API")]
         public TextMeshProUGUI gameControlText;
         public Button callRewardAd;
-        private string usingBoardID;
 
         private void Awake()
         {
+            SetAds();
+        }
+
+        private void SetAds()
+        {
             LaggedAPIUnity.OnResumeGame += OnResumeGame;
-            LaggedAPIUnity.OnPauseGame += OnPauseGame;
-            LaggedAPIUnity.onRewardAdReady += onRewardAdReady;
             LaggedAPIUnity.onRewardAdSuccess += onRewardAdSuccess;
             LaggedAPIUnity.onRewardAdFailure += onRewardAdFailure;
-
+            callRewardAd.interactable = false;
         }
 
         public void OnResumeGame()
         {
             gameControlText.text = "Ad completed - RESUME GAME";
+            CheckRewardAd();
         }
-
-        public void OnPauseGame()
-        {
-            gameControlText.text = "Ad running - GAME PAUSED";
-            Time.timeScale = 0f;
-        }
-
-        public void onRewardAdReady()
-        {
-            gameControlText.text = "Reward ad is ready";
-            callRewardAd.interactable = true;
-
-        }
-
         public void onRewardAdSuccess()
         {
             gameControlText.text = "Reward ad succesful, give user reward";
@@ -89,13 +78,12 @@ namespace Holeio.UI
         {
             gameControlText.text = "Reward ad failure";
             callRewardAd.interactable = false;
-
         }
 
         public void ShowAd()
         {
             LaggedAPIUnity.Instance.ShowAd();
-            CheckRewardAd();
+            
         }
 
         public void CheckRewardAd()
@@ -140,11 +128,6 @@ namespace Holeio.UI
                 GameFinishedState();
                 currentTime = 0;
                 UpdateTimerDisplay();
-                int Level= currentLevel.buildIndex;
-                if (Currentscore < WinScoreByLevel[Level])//Temp measure
-                {
-                    
-                }
             }
         }
 
@@ -153,6 +136,7 @@ namespace Holeio.UI
             Time.timeScale = 0;
             LastScore.text = "SCORE : " + Currentscore;
             GameFinished.SetActive(true);
+            InGame.SetActive(false);
             Debug.Log("Game Completed");
             ShowAd();
         }

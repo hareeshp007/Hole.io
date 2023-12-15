@@ -274,5 +274,5 @@ MonoBehaviour:
   vertical: 0
   holeSize: 1
   scaleFactor: 2
-  ConstrainedX: -27
-  ConstrainedZ: -18
+  newPosition: {x: 0, y: 0, z: 0}
+  playerInput: {fileID: 0}

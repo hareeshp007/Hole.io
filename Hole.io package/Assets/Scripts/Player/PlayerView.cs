@@ -40,11 +40,6 @@ namespace Holeio.Player
         {
             horizontal = playerInput.Horizontal; 
             vertical = playerInput.Vertical;
-
-
-            //horizontal = Input.GetAxis("Horizontal");
-            //vertical = Input.GetAxis("Vertical");
-
         }
 
         private void Movement()
@@ -54,6 +49,10 @@ namespace Holeio.Player
                 if(horizontal != 0 || vertical != 0)
                 {
                     rb.velocity=new Vector3 (horizontal*speed, 0, vertical*speed);
+                }
+                else
+                {
+                    rb.velocity = Vector3.zero;
                 }
             }
 

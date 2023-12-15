@@ -48,6 +48,9 @@ public class PlayerService : MonoSingletonGeneric<PlayerService>
     public void SetPlayerJoystick(FixedJoystick playerJoystick)
     {
         playerInput=playerJoystick;
-
+        if (playerInput != null)
+        {
+            player.SetJoystick(playerInput);
+        }
     }
 }
