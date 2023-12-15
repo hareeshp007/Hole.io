@@ -151,5 +151,9 @@ namespace Holeio.UI
             GameStart.SetActive(false);
             InGame.SetActive(true);
         }
+        public void Exit()
+        {
+            Application.Quit();
+        }
     }
 }

@@ -255,6 +255,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: LoadNextScene
       objectReference: {fileID: 0}
+    - target: {fileID: 7218262829081675186, guid: 9f29924c4772d85498f2abd851331d12, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6397754540230808412}
+    - target: {fileID: 7218262829081675186, guid: 9f29924c4772d85498f2abd851331d12, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Exit
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3006746463269056193, guid: 9f29924c4772d85498f2abd851331d12, type: 3}
     m_RemovedGameObjects: []
