@@ -1,5 +1,6 @@
 
 using Holeio.Interact;
+using System;
 using UnityEngine;
 
 namespace Holeio.Player
@@ -20,6 +21,8 @@ namespace Holeio.Player
         private int scaleFactor;
         [SerializeField]
         private Vector3 newPosition;
+        [SerializeField]
+        private FixedJoystick playerInput;
 
         private void Start()
         {
@@ -35,8 +38,13 @@ namespace Holeio.Player
 
         private void handleInput()
         {
-            horizontal = Input.GetAxis("Horizontal");
-            vertical = Input.GetAxis("Vertical");
+            horizontal = playerInput.Horizontal; 
+            vertical = playerInput.Vertical;
+
+
+            //horizontal = Input.GetAxis("Horizontal");
+            //vertical = Input.GetAxis("Vertical");
+
         }
 
         private void Movement()
@@ -78,6 +86,11 @@ namespace Holeio.Player
             {
                 other.gameObject.GetComponent<Interactable>().OnInteract(holeSize,false);
             }
+        }
+
+        public void SetJoystick(FixedJoystick playerJoystick)
+        {
+            playerInput=playerJoystick;
         }
     }
     

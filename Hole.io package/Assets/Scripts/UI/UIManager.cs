@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Holeio.UI
 {
@@ -14,12 +15,14 @@ namespace Holeio.UI
         public GameObject InGame;
         public TextMeshProUGUI ScoreText;
         public TextMeshProUGUI timerText;
+        public FixedJoystick PlayerJoystick;
 
-        [Header("Game Completed")]
+        [Header("Game Start")]
         public GameObject GameStart;
         [Header("Game Completed")]
         public GameObject GameFinished;
         public TextMeshProUGUI LastScore;
+        public GameObject RewardButton;
 
         [Header("Levels")]
         public string[] GameLevels;
@@ -36,7 +39,69 @@ namespace Holeio.UI
         private float currentTime;
         [SerializeField]
         private float StartTime;
+        [Header("Lagged API")]
+        public TextMeshProUGUI gameControlText;
+        public Button callRewardAd;
+        private string usingBoardID;
 
+        private void Awake()
+        {
+            LaggedAPIUnity.OnResumeGame += OnResumeGame;
+            LaggedAPIUnity.OnPauseGame += OnPauseGame;
+            LaggedAPIUnity.onRewardAdReady += onRewardAdReady;
+            LaggedAPIUnity.onRewardAdSuccess += onRewardAdSuccess;
+            LaggedAPIUnity.onRewardAdFailure += onRewardAdFailure;
+
+        }
+
+        public void OnResumeGame()
+        {
+            gameControlText.text = "Ad completed - RESUME GAME";
+        }
+
+        public void OnPauseGame()
+        {
+            gameControlText.text = "Ad running - GAME PAUSED";
+            Time.timeScale = 0f;
+        }
+
+        public void onRewardAdReady()
+        {
+            gameControlText.text = "Reward ad is ready";
+            callRewardAd.interactable = true;
+
+        }
+
+        public void onRewardAdSuccess()
+        {
+            gameControlText.text = "Reward ad succesful, give user reward";
+            callRewardAd.interactable = false;
+
+        }
+
+        public void onRewardAdFailure()
+        {
+            gameControlText.text = "Reward ad failure";
+            callRewardAd.interactable = false;
+
+        }
+
+        public void ShowAd()
+        {
+            LaggedAPIUnity.Instance.ShowAd();
+        }
+
+        public void CheckRewardAd()
+        {
+            gameControlText.text = "Checking reward ad...";
+            LaggedAPIUnity.Instance.CheckRewardAd();
+        }
+        public void PlayRewardAd()
+        {
+            gameControlText.text = "Playing reward ad if available...";
+            LaggedAPIUnity.Instance.PlayRewardAd();
+
+        }
 
         private void Start()
         {
@@ -46,17 +111,7 @@ namespace Holeio.UI
             currentLevel = SceneManager.GetActiveScene();
             
             UIService.Instance.SetUIManager(this);
-        }
-        private void OnEnable()
-        {
-            
-        }
-        private IEnumerator OtherLevels()
-        {
-            GameFinished.SetActive(false);
-            InGame.SetActive(true);
-            GameStart.SetActive(false);
-            yield return new WaitForSeconds(StartTime);
+            PlayerService.Instance.SetPlayerJoystick(PlayerJoystick);
         }
 
         private void initialized()
@@ -78,6 +133,11 @@ namespace Holeio.UI
                 GameFinishedState();
                 currentTime = 0;
                 UpdateTimerDisplay();
+                int Level= currentLevel.buildIndex;
+                if (Currentscore < WinScoreByLevel[Level])//Temp measure
+                {
+                    
+                }
             }
         }
 
@@ -87,6 +147,7 @@ namespace Holeio.UI
             LastScore.text = "SCORE : " + Currentscore;
             GameFinished.SetActive(true);
             Debug.Log("Game Completed");
+            ShowAd();
         }
 
         private void UpdateTimerDisplay()

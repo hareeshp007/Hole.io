@@ -15,6 +15,8 @@ public class PlayerService : MonoSingletonGeneric<PlayerService>
     private PlayerView player;
     [SerializeField]
     private int currentLevel=0;
+    [SerializeField]
+    private FixedJoystick playerInput;
 
     public void CheckForUpgrade(int currentScore)
     {
@@ -37,5 +39,15 @@ public class PlayerService : MonoSingletonGeneric<PlayerService>
         player = playerView;
         Playercamera.setPlayerTransform(player.transform);
         currentLevel = 0;
+        if(playerInput != null)
+        {
+            player.SetJoystick(playerInput);
+        }
+    }
+
+    public void SetPlayerJoystick(FixedJoystick playerJoystick)
+    {
+        playerInput=playerJoystick;
+
     }
 }
