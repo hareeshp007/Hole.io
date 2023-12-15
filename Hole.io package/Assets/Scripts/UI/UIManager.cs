@@ -76,7 +76,13 @@ namespace Holeio.UI
         {
             gameControlText.text = "Reward ad succesful, give user reward";
             callRewardAd.interactable = false;
+            ScoreMultiplier();
+        }
 
+        private void ScoreMultiplier()
+        {
+            Currentscore *= 2;
+            LastScore.text = "SCORE : " + Currentscore;
         }
 
         public void onRewardAdFailure()
@@ -89,6 +95,7 @@ namespace Holeio.UI
         public void ShowAd()
         {
             LaggedAPIUnity.Instance.ShowAd();
+            CheckRewardAd();
         }
 
         public void CheckRewardAd()
